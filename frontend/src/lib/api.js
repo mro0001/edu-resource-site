@@ -9,6 +9,11 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
+// Ensure list endpoints always return arrays, even if the API returns unexpected data
+function ensureArray(data) {
+  return Array.isArray(data) ? data : []
+}
+
 // Inject auth token from localStorage on every request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
@@ -40,7 +45,7 @@ export const updateMe = (data) =>
 // ── Assignments ──────────────────────────────────────────────────────────────
 
 export const getAssignments = (params = {}) =>
-  api.get('/assignments', { params }).then(r => r.data)
+  api.get('/assignments', { params }).then(r => ensureArray(r.data))
 
 export const getAssignment = (id) =>
   api.get(`/assignments/${id}`).then(r => r.data)
@@ -59,7 +64,7 @@ export const serveUrl = (id) => `/api/assignments/${id}/serve`
 // ── Materials ────────────────────────────────────────────────────────────────
 
 export const getMaterials = (assignmentId) =>
-  api.get(`/assignments/${assignmentId}/materials`).then(r => r.data)
+  api.get(`/assignments/${assignmentId}/materials`).then(r => ensureArray(r.data))
 
 export const addMaterial = (assignmentId, data) =>
   api.post(`/assignments/${assignmentId}/materials`, data).then(r => r.data)
@@ -70,7 +75,7 @@ export const deleteMaterial = (assignmentId, materialId) =>
 // ── Comments ─────────────────────────────────────────────────────────────────
 
 export const getComments = (assignmentId) =>
-  api.get(`/assignments/${assignmentId}/comments`).then(r => r.data)
+  api.get(`/assignments/${assignmentId}/comments`).then(r => ensureArray(r.data))
 
 export const addComment = (assignmentId, data) =>
   api.post(`/assignments/${assignmentId}/comments`, data).then(r => r.data)
@@ -81,7 +86,7 @@ export const deleteComment = (assignmentId, commentId) =>
 // ── GitHub Browser ───────────────────────────────────────────────────────────
 
 export const getBranches = (owner, repo) =>
-  api.get('/github/branches', { params: { owner, repo } }).then(r => r.data)
+  api.get('/github/branches', { params: { owner, repo } }).then(r => ensureArray(r.data))
 
 export const serveBranchUrl = (owner, repo, branch) =>
   `/api/github/serve?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}&branch=${encodeURIComponent(branch)}`
@@ -89,7 +94,7 @@ export const serveBranchUrl = (owner, repo, branch) =>
 // ── Blog ─────────────────────────────────────────────────────────────────────
 
 export const getBlogPosts = (params = {}) =>
-  api.get('/blog', { params }).then(r => r.data)
+  api.get('/blog', { params }).then(r => ensureArray(r.data))
 
 export const getBlogPost = (slug) =>
   api.get(`/blog/${slug}`).then(r => r.data)
@@ -106,7 +111,7 @@ export const deleteBlogPost = (id) =>
 // ── Instructions ─────────────────────────────────────────────────────────────
 
 export const getInstructions = (params = {}) =>
-  api.get('/instructions', { params }).then(r => r.data)
+  api.get('/instructions', { params }).then(r => ensureArray(r.data))
 
 export const getInstruction = (slug) =>
   api.get(`/instructions/${slug}`).then(r => r.data)
@@ -123,7 +128,7 @@ export const deleteInstruction = (id) =>
 // ── Admin ────────────────────────────────────────────────────────────────────
 
 export const getUsers = () =>
-  api.get('/admin/users').then(r => r.data)
+  api.get('/admin/users').then(r => ensureArray(r.data))
 
 export const verifyUser = (userId, data) =>
   api.patch(`/admin/users/${userId}/verify`, data).then(r => r.data)
