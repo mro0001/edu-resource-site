@@ -6,7 +6,7 @@ set -o errexit  # exit on error
 
 echo "=== Installing Python dependencies ==="
 pip install --upgrade pip
-pip install .
+pip install fastapi uvicorn[standard] sqlmodel aiofiles httpx bcrypt python-jose[cryptography] python-multipart
 
 echo "=== Installing frontend dependencies ==="
 cd frontend
