@@ -16,4 +16,7 @@ echo "=== Building frontend ==="
 npm run build
 cd ..
 
+echo "=== Seeding database ==="
+python seed_blogs.py
+
 echo "=== Build complete ==="
