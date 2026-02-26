@@ -13,7 +13,8 @@ async def list_branches(
 ):
     try:
         branches = await github_service.list_branches(owner, repo)
-        return branches
+        default_branch = await github_service.get_default_branch(owner, repo)
+        return {"branches": branches, "default_branch": default_branch}
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"GitHub API error: {e}")
 

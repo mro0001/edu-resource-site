@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 from sqlmodel import Session, select
 
 from ..database import get_session
-from ..auth import require_admin
+from ..auth import require_auth, require_admin
 from ..models.user import User
 from ..models.assignment import Assignment, AssignmentCreate, AssignmentUpdate, AssignmentRead
 from ..services import github_service, file_service
@@ -47,7 +47,7 @@ def get_assignment(assignment_id: int, session: Session = Depends(get_session)):
 @router.post("/import", response_model=AssignmentRead)
 async def import_from_github(
     body: AssignmentCreate,
-    admin: User = Depends(require_admin),
+    user: User = Depends(require_auth),
     session: Session = Depends(get_session),
 ):
     if not body.github_url:
@@ -63,7 +63,7 @@ async def import_from_github(
         tags=body.tags,
         github_url=body.github_url,
         github_branch=resolved_branch,
-        created_by_id=admin.id,
+        created_by_id=user.id,
     )
     session.add(assignment)
     session.commit()

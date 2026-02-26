@@ -43,6 +43,7 @@ export default function App() {
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="submit" element={<AdminSubmit />} />
               <Route path="admin" element={<AdminDashboard />} />
               <Route path="admin/submit" element={<AdminSubmit />} />
               <Route path="admin/blog/new" element={<BlogEditor />} />

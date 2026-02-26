@@ -39,6 +39,16 @@ export default function Layout() {
             <div className="flex items-center gap-3">
               {user ? (
                 <>
+                  <Link
+                    to="/submit"
+                    className={`text-sm px-3 py-2 ${
+                      location.pathname === '/submit'
+                        ? 'text-brand-700 font-medium'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Submit
+                  </Link>
                   {user.role === 'admin' && (
                     <Link
                       to="/admin"

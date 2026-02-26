@@ -86,7 +86,7 @@ export const deleteComment = (assignmentId, commentId) =>
 // ── GitHub Browser ───────────────────────────────────────────────────────────
 
 export const getBranches = (owner, repo) =>
-  api.get('/github/branches', { params: { owner, repo } }).then(r => ensureArray(r.data))
+  api.get('/github/branches', { params: { owner, repo } }).then(r => r.data)
 
 export const serveBranchUrl = (owner, repo, branch) =>
   `/api/github/serve?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}&branch=${encodeURIComponent(branch)}`
