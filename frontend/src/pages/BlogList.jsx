@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { getBlogPosts } from '../lib/api'
+import { parseTags } from '../lib/utils'
 
 export default function BlogList() {
   const [tagFilter, setTagFilter] = useState('')
@@ -11,8 +12,8 @@ export default function BlogList() {
     queryFn: () => getBlogPosts(),
   })
 
-  const allTags = [...new Set(posts.flatMap(p => p.tags || []))]
-  const filtered = tagFilter ? posts.filter(p => p.tags?.includes(tagFilter)) : posts
+  const allTags = [...new Set(posts.flatMap(p => parseTags(p.tags)))]
+  const filtered = tagFilter ? posts.filter(p => parseTags(p.tags).includes(tagFilter)) : posts
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -62,9 +63,9 @@ export default function BlogList() {
                 )}
               </div>
               {post.excerpt && <p className="text-sm text-gray-600">{post.excerpt}</p>}
-              {post.tags?.length > 0 && (
+              {parseTags(post.tags).length > 0 && (
                 <div className="flex gap-1.5 mt-3">
-                  {post.tags.map(t => (
+                  {parseTags(post.tags).map(t => (
                     <span key={t} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{t}</span>
                   ))}
                 </div>

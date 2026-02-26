@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { getAssignments } from '../lib/api'
+import { parseTags } from '../lib/utils'
 
 export default function Home() {
   const [search, setSearch] = useState('')
@@ -21,7 +22,7 @@ export default function Home() {
       return (
         a.title.toLowerCase().includes(q) ||
         a.description?.toLowerCase().includes(q) ||
-        a.tags?.some(t => t.toLowerCase().includes(q))
+        parseTags(a.tags).some(t => t.toLowerCase().includes(q))
       )
     }
     return true
@@ -81,7 +82,7 @@ export default function Home() {
                       {a.subject_area}
                     </span>
                   )}
-                  {a.tags?.map(t => (
+                  {parseTags(a.tags).map(t => (
                     <span key={t} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                       {t}
                     </span>

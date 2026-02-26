@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getAssignment, serveUrl } from '../lib/api'
+import { parseTags } from '../lib/utils'
 import CommentThread from '../components/CommentThread'
 import MaterialsList from '../components/MaterialsList'
 import BranchViewer from '../components/BranchViewer'
@@ -73,11 +74,11 @@ export default function AssignmentDetail() {
                 {assignment.description && (
                   <p className="text-sm text-gray-700">{assignment.description}</p>
                 )}
-                {assignment.tags?.length > 0 && (
+                {parseTags(assignment.tags).length > 0 && (
                   <div>
                     <h4 className="text-xs font-medium text-gray-500 uppercase mb-2">Tags</h4>
                     <div className="flex flex-wrap gap-1.5">
-                      {assignment.tags.map(t => (
+                      {parseTags(assignment.tags).map(t => (
                         <span key={t} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{t}</span>
                       ))}
                     </div>

@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getBlogPost } from '../lib/api'
+import { parseTags } from '../lib/utils'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 
 export default function BlogPost() {
@@ -26,9 +27,9 @@ export default function BlogPost() {
             <span>{new Date(post.published_at).toLocaleDateString()}</span>
           )}
         </div>
-        {post.tags?.length > 0 && (
+        {parseTags(post.tags).length > 0 && (
           <div className="flex gap-1.5 mb-8">
-            {post.tags.map(t => (
+            {parseTags(post.tags).map(t => (
               <span key={t} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{t}</span>
             ))}
           </div>

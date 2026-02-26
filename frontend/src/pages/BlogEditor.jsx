@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { createBlogPost, updateBlogPost, getBlogPosts } from '../lib/api'
+import { parseTags } from '../lib/utils'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 
 export default function BlogEditor() {
@@ -32,7 +33,7 @@ export default function BlogEditor() {
           slug: post.slug,
           content: post.content,
           excerpt: post.excerpt || '',
-          tags: post.tags?.join(', ') || '',
+          tags: parseTags(post.tags).join(', '),
           is_published: post.is_published,
         })
       }
