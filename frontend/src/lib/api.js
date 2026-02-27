@@ -69,6 +69,14 @@ export const getMaterials = (assignmentId) =>
 export const addMaterial = (assignmentId, data) =>
   api.post(`/assignments/${assignmentId}/materials`, data).then(r => r.data)
 
+export const uploadMaterial = (assignmentId, formData) =>
+  api.post(`/assignments/${assignmentId}/materials/upload`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then(r => r.data)
+
+export const materialDownloadUrl = (assignmentId, materialId) =>
+  `/api/assignments/${assignmentId}/materials/${materialId}/download`
+
 export const deleteMaterial = (assignmentId, materialId) =>
   api.delete(`/assignments/${assignmentId}/materials/${materialId}`).then(r => r.data)
 

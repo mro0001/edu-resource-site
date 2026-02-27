@@ -90,12 +90,14 @@ async def import_from_github(
 def update_assignment(
     assignment_id: int,
     body: AssignmentUpdate,
-    admin: User = Depends(require_admin),
+    user: User = Depends(require_auth),
     session: Session = Depends(get_session),
 ):
     assignment = session.get(Assignment, assignment_id)
     if not assignment:
         raise HTTPException(status_code=404, detail="Assignment not found")
+    if assignment.created_by_id != user.id and user.role != "admin":
+        raise HTTPException(status_code=403, detail="Only the creator or an admin can edit this assignment")
 
     update_data = body.model_dump(exclude_unset=True)
     for key, value in update_data.items():
@@ -111,12 +113,14 @@ def update_assignment(
 @router.delete("/{assignment_id}")
 def delete_assignment(
     assignment_id: int,
-    admin: User = Depends(require_admin),
+    user: User = Depends(require_auth),
     session: Session = Depends(get_session),
 ):
     assignment = session.get(Assignment, assignment_id)
     if not assignment:
         raise HTTPException(status_code=404, detail="Assignment not found")
+    if assignment.created_by_id != user.id and user.role != "admin":
+        raise HTTPException(status_code=403, detail="Only the creator or an admin can delete this assignment")
     file_service.delete_assignment_files(assignment_id)
     session.delete(assignment)
     session.commit()
